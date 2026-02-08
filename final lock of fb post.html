@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me? ❤️</title>
+    <!-- Facebook / Open Graph meta tags -->
+<meta property="og:title" content="Do You Love Me? 😊">
+<meta property="og:description" content="একটা ছোট প্রশ্ন… উত্তর দাও 😌">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourusername.github.io/your-repo-name/">
+<meta property="og:image" content="https://yourimageurl.com/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Floating hearts in background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            opacity: 0;
+            animation: floatUp 15s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        /* Main content container */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            overflow: hidden;
+        }
+
+        /* Title styling */
+        h1 {
+            color: #ff5e8e;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 40px 25px;
+            }
+        }
+
+        /* Buttons container */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* Button styling */
+        .btn {
+            padding: 18px 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-width: 150px;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+        }
+
+        /* Yes button */
+        .yes-btn {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            background: linear-gradient(to right, #45a049, #7cb342);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        /* No button */
+        .no-btn {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            position: relative;
+            transition: all 0.1s ease;
+        }
+
+        .no-btn:hover {
+            background: linear-gradient(to right, #ff667c, #ff6fa8);
+        }
+
+        /* Ask Again button */
+        .ask-again-btn {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            margin-top: 40px;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            display: none;
+            animation: fadeInUp 0.8s ease 1s forwards;
+            opacity: 0;
+        }
+
+        .ask-again-btn:hover {
+            background: linear-gradient(to right, #5a0cb9, #1c6ae4);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(106, 17, 203, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Celebration message */
+        .celebration-message {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 1s ease;
+        }
+
+        .celebration-message h2 {
+            color: #ff5e8e;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .celebration-message p {
+            font-size: 1.8rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .celebration-hearts {
+            font-size: 3rem;
+            color: #ff5e8e;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Celebration hearts */
+        .celebration-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            display: none;
+        }
+
+        .celebration-heart {
+            position: absolute;
+            color: #ff5e8e;
+            font-size: 30px;
+            opacity: 0;
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Contact button */
+        .contact-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(to right, #ff5e8e, #ff9a9e);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 94, 142, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 25px rgba(255, 94, 142, 0.6);
+        }
+
+        /* Contact popup */
+        .contact-popup {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            width: 320px;
+            z-index: 101;
+            display: none;
+            animation: slideUp 0.4s ease;
+            transform-origin: bottom right;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .contact-popup h3 {
+            color: #ff5e8e;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, #ff5e8e, #ff9a9e);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .contact-text {
+            font-size: 1.1rem;
+            color: #555;
+            word-break: break-all;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-popup:hover {
+            color: #ff5e8e;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Watermark -->
+    <div class="watermark">sifat morse</div>
+
+    <!-- Floating hearts in background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Main container -->
+    <div class="container" id="mainContainer">
+        <div class="question-container" id="questionContainer">
+            <h1>Do You Love Me? 😊</h1>
+            
+            <div class="buttons-container">
+                <button class="btn yes-btn" id="yesBtn">YES</button>
+                <button class="btn no-btn" id="noBtn">NO</button>
+            </div>
+        </div>
+
+        <!-- Celebration message (hidden by default) -->
+        <div class="celebration-message" id="celebrationMessage">
+            <h2>Thank you!</h2>
+            <p>I love you too 🌸</p>
+            <div class="celebration-hearts">❤️❤️❤️</div>
+            
+            <!-- Ask Again Button -->
+            <button class="btn ask-again-btn" id="askAgainBtn">
+                <i class="fas fa-redo"></i> Ask Again
+            </button>
+        </div>
+    </div>
+
+    <!-- Celebration hearts (hidden by default) -->
+    <div class="celebration-container" id="celebrationContainer"></div>
+
+    <!-- Contact button -->
+    <div class="contact-btn" id="contactBtn">
+        <i class="fas fa-heart"></i>
+    </div>
+
+    <!-- Contact popup -->
+    <div class="contact-popup" id="contactPopup">
+        <button class="close-popup" id="closePopup">&times;</button>
+        <h3>Contact Info</h3>
+        <div class="contact-info">
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="contact-text">+8801764946311</div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-text">mssifat15@gmail.com</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for popup -->
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        // DOM Elements
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const askAgainBtn = document.getElementById('askAgainBtn');
+        const questionContainer = document.getElementById('questionContainer');
+        const celebrationMessage = document.getElementById('celebrationMessage');
+        const mainContainer = document.getElementById('mainContainer');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const celebrationContainer = document.getElementById('celebrationContainer');
+        const contactBtn = document.getElementById('contactBtn');
+        const contactPopup = document.getElementById('contactPopup');
+        const closePopup = document.getElementById('closePopup');
+        const overlay = document.getElementById('overlay');
+
+        // Create floating background hearts
+        function createFloatingHearts() {
+            const heartCount = 25;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                
+                // Random properties
+                const left = Math.random() * 100;
+                const size = 15 + Math.random() * 25;
+                const delay = Math.random() * 15;
+                const duration = 10 + Math.random() * 10;
+                
+                heart.style.left = `${left}%`;
+                heart.style.fontSize = `${size}px`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+                
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Move NO button to random position
+        function moveNoButton() {
+            const containerRect = mainContainer.getBoundingClientRect();
+            const buttonRect = noBtn.getBoundingClientRect();
+            
+            // Calculate max positions to keep button inside container
+            const maxX = containerRect.width - buttonRect.width - 40;
+            const maxY = containerRect.height - buttonRect.height - 40;
+            
+            // Generate random positions within container
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            // Apply new position
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+            
+            // Add a little rotation for fun
+            noBtn.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+        }
+
+        // Create celebration hearts animation
+        function createCelebrationHearts() {
+            celebrationContainer.innerHTML = '';
+            celebrationContainer.style.display = 'block';
+            
+            const heartCount = 30;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('celebration-heart');
+                heart.innerHTML = '❤️';
+                
+                // Random direction and distance
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 200;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                // Random start position around the center
+                const startX = 50 + (Math.random() * 20 - 10);
+                const startY = 50 + (Math.random() * 20 - 10);
+                
+                heart.style.left = `${startX}%`;
+                heart.style.top = `${startY}%`;
+                heart.style.setProperty('--tx', `${tx}px`);
+                heart.style.setProperty('--ty', `${ty}px`);
+                heart.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                celebrationContainer.appendChild(heart);
+            }
+            
+            // Hide hearts after animation completes
+            setTimeout(() => {
+                celebrationContainer.style.display = 'none';
+            }, 2000);
+        }
+
+        // Reset the page to initial state
+        function resetToInitialState() {
+            // Hide celebration message
+            celebrationMessage.style.opacity = '0';
+            celebrationMessage.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                celebrationMessage.style.display = 'none';
+                
+                // Show question and buttons again
+                questionContainer.style.display = 'block';
+                setTimeout(() => {
+                    questionContainer.style.opacity = '1';
+                    questionContainer.style.transform = 'translateY(0)';
+                }, 50);
+                
+                // Reset NO button position
+                noBtn.style.position = '';
+                noBtn.style.left = '';
+                noBtn.style.top = '';
+                noBtn.style.transform = '';
+                
+                // Hide Ask Again button
+                askAgainBtn.style.display = 'none';
+                askAgainBtn.style.opacity = '0';
+                
+                // Reset container animation
+                mainContainer.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    mainContainer.style.transform = 'scale(1)';
+                }, 300);
+            }, 300);
+        }
+
+        // YES button click handler
+        yesBtn.addEventListener('click', function() {
+            // Hide question and buttons
+            questionContainer.style.opacity = '0';
+            questionContainer.style.transform = 'translateY(-20px)';
+            
+            setTimeout(() => {
+                questionContainer.style.display = 'none';
+                
+                // Show celebration message
+                celebrationMessage.style.display = 'block';
+                
+                // Show Ask Again button after a delay
+                setTimeout(() => {
+                    askAgainBtn.style.display = 'inline-block';
+                }, 800);
+                
+                // Add some animation to container
+                mainContainer.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    mainContainer.style.transform = 'scale(1)';
+                }, 300);
+                
+                // Create celebration hearts
+                createCelebrationHearts();
+                
+                // Add more floating hearts
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createFloatingHearts();
+                    }, i * 200);
+                }
+            }, 300);
+        });
+
+        // Ask Again button click handler
+        askAgainBtn.addEventListener('click', resetToInitialState);
+
+        // NO button event handlers
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        });
+        noBtn.addEventListener('click', moveNoButton);
+
+        // Contact button click handler
+        contactBtn.addEventListener('click', function() {
+            contactPopup.style.display = 'block';
+            overlay.style.display = 'block';
+        });
+
+        // Close popup handlers
+        closePopup.addEventListener('click', closeContactPopup);
+        overlay.addEventListener('click', closeContactPopup);
+
+        // Close popup function
+        function closeContactPopup() {
+            contactPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeContactPopup();
+            }
+        });
+
+        // Initialize floating hearts on load
+        window.addEventListener('load', function() {
+            createFloatingHearts();
+            
+            // Add a few more hearts every 10 seconds
+            setInterval(() => {
+                createFloatingHearts();
+            }, 10000);
+        });
+
+        // Responsive adjustments
+        window.addEventListener('resize', function() {
+            // Reset NO button position on resize
+            noBtn.style.position = '';
+            noBtn.style.left = '';
+            noBtn.style.top = '';
+            noBtn.style.transform = '';
+        });
+    </script>
+</body>
+</html>
